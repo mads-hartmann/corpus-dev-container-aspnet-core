@@ -1,0 +1,30 @@
+tasks:
+  restore:
+    name: Restore dependencies
+    description: Restore NuGet packages for the project.
+    command: |
+      dotnet restore
+    triggeredBy:
+      - manual
+      - postDevcontainerStart
+      - prebuild
+
+  build:
+    name: Build
+    description: Build the ASP.NET Core project.
+    command: |
+      dotnet build --no-restore
+    triggeredBy:
+      - manual
+    dependsOn:
+      - restore
+
+services:
+  dev-server:
+    name: Dev Server
+    description: Run the ASP.NET Core app with hot reload on port 5108.
+    commands:
+      start: |
+        dotnet watch run --launch-profile http
+      ready: |
+        curl -sf http://localhost:5108/weatherforecast
