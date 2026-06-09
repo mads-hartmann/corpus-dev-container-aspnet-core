@@ -1,0 +1,6 @@
+@CorpusDevContainerAspNetCore_HostAddress = http://localhost:5108
+
+GET {{CorpusDevContainerAspNetCore_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
