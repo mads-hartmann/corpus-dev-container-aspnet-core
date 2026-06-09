@@ -26,7 +26,7 @@ services:
     commands:
       start: |
         ona environment port open 5108 --admission creator_only --name app
-        dotnet run --launch-profile http
+        dotnet run --launch-profile http --urls http://0.0.0.0:5108
       ready: |
         curl -sf http://localhost:5108/weatherforecast
     triggeredBy:
