@@ -1,0 +1,33 @@
+tasks:
+  restore:
+    name: Restore dependencies
+    description: Restore NuGet packages for the project.
+    command: |
+      dotnet restore
+    triggeredBy:
+      - manual
+      - postDevcontainerStart
+      - prebuild
+
+  build:
+    name: Build
+    description: Build the ASP.NET Core project.
+    command: |
+      dotnet build --no-restore
+    triggeredBy:
+      - manual
+    dependsOn:
+      - restore
+
+services:
+  app:
+    name: ASP.NET Core App
+    description: Run the ASP.NET Core development server.
+    commands:
+      start: |
+        ona environment port open 5108 --admission creator_only --name app
+        dotnet run --launch-profile http
+      ready: |
+        curl -sf http://localhost:5108/weatherforecast
+    triggeredBy:
+      - manual
