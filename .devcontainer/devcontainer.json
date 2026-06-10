@@ -1,0 +1,11 @@
+{
+	"name": "CorpusDevContainerAspNetCore",
+	"image": "mcr.microsoft.com/devcontainers/dotnet:9.0",
+	"forwardPorts": [5108],
+	"portsAttributes": {
+		"5108": {
+			"label": "ASP.NET Core App",
+			"onAutoForward": "notify"
+		}
+	}
+}
