@@ -1,0 +1,11 @@
+{
+  "name": "Corpus Dev Container ASP.NET Core",
+  "image": "mcr.microsoft.com/devcontainers/dotnet:1-9.0-bookworm",
+  "forwardPorts": [5108],
+  "portsAttributes": {
+    "5108": {
+      "label": "ASP.NET Core API",
+      "onAutoForward": "notify"
+    }
+  }
+}
