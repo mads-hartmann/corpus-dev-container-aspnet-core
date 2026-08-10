@@ -4,7 +4,7 @@
 	"forwardPorts": [5108],
 	"portsAttributes": {
 		"5108": {
-			"label": "ASP.NET Core App",
+			"label": "ASP.NET Core",
 			"onAutoForward": "notify"
 		}
 	}

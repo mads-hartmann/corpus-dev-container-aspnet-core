@@ -1,9 +1,8 @@
 tasks:
-  restore:
-    name: Restore dependencies
-    description: Restore NuGet packages for the project.
-    command: |
-      dotnet restore
+  install-dependencies:
+    name: Install dependencies
+    description: Restore the project's NuGet dependencies.
+    command: dotnet restore
     triggeredBy:
       - manual
       - postDevcontainerStart
@@ -11,24 +10,22 @@ tasks:
 
   build:
     name: Build
-    description: Build the ASP.NET Core project.
-    command: |
-      dotnet build --no-restore
+    description: Build the ASP.NET Core application.
+    command: dotnet build --no-restore
     triggeredBy:
       - manual
     dependsOn:
-      - restore
+      - install-dependencies
 
 services:
-  app:
-    name: ASP.NET Core App
-    description: Run the ASP.NET Core development server.
+  aspnet-core:
+    name: ASP.NET Core
+    description: Run the ASP.NET Core application in development mode.
     triggeredBy:
       - manual
       - postEnvironmentStart
     commands:
       start: |
-        ona environment port open 5108 --dont-wait --admission creator_only --name "ASP.NET Core App"
-        dotnet run --urls http://0.0.0.0:5108
-      ready: |
-        curl -sf http://localhost:5108/weatherforecast
+        ona environment port open 5108 --admission creator_only --name "ASP.NET Core"
+        ASPNETCORE_ENVIRONMENT=Development dotnet run --no-launch-profile --urls http://0.0.0.0:5108
+      ready: curl --fail --silent http://localhost:5108/
