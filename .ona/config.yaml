@@ -1,0 +1,31 @@
+tasks:
+  installDependencies:
+    name: Install dependencies
+    description: Restore the ASP.NET Core project dependencies.
+    command: dotnet restore
+    triggeredBy:
+      - manual
+      - postDevcontainerStart
+      - prebuild
+
+  build:
+    name: Build
+    description: Build the ASP.NET Core application.
+    command: dotnet build --no-restore
+    triggeredBy:
+      - manual
+    dependsOn:
+      - installDependencies
+
+services:
+  web:
+    name: ASP.NET Core
+    description: Run the ASP.NET Core development server.
+    triggeredBy:
+      - manual
+      - postEnvironmentStart
+    commands:
+      start: |
+        ona environment port open 5108 --admission creator_only --name "ASP.NET Core"
+        ASPNETCORE_ENVIRONMENT=Development dotnet run --no-launch-profile --no-restore --urls http://0.0.0.0:5108
+      ready: curl -fsS http://localhost:5108/
