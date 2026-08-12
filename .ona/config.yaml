@@ -1,0 +1,28 @@
+tasks:
+  install-dependencies:
+    name: Install dependencies
+    command: dotnet restore
+    triggeredBy:
+      - manual
+      - postDevcontainerStart
+      - prebuild
+
+  build:
+    name: Build
+    command: dotnet build --no-restore
+    dependsOn:
+      - install-dependencies
+    triggeredBy:
+      - manual
+
+services:
+  aspnet-core-api:
+    name: ASP.NET Core API
+    commands:
+      start: |
+        ona environment port open 5108 --admission creator_only --name "ASP.NET Core API"
+        dotnet run --no-restore --urls http://0.0.0.0:5108
+      ready: curl -fsS http://localhost:5108/
+    triggeredBy:
+      - manual
+      - postEnvironmentStart
